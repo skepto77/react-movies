@@ -14,7 +14,7 @@ export default class Service extends React.Component {
     return await response.json();
   }
 
-  getAllMovies = async () => {
+  getDefaultMovies = async () => {
     const res = await this.getResource(`&plot=full&s=doctor`);
     return res.Search.map(this._transformData);
   }

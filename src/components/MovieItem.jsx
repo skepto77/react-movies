@@ -19,7 +19,7 @@ export default function MovieItem (props) {
             <div className="card-body">
               <p className={classType}>{type}</p>
               <h5 className="card-title">{title}</h5>
-              <p className="card-text">{shorten(title)}Description. This content is a little bit longer.</p>
+              <p className="card-text">{shorten(title)} This content is a little bit longer.</p>
             </div>
           </div>
         </div>
