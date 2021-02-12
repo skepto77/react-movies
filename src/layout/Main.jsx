@@ -9,7 +9,7 @@ export default function Main (props) {
       <div className="row">
         <h2>app</h2>
       </div>
-        <MovieList getData = {props.getData}/>
+        <MovieList {...props}/>
     </main>
   )
 }

@@ -16,9 +16,10 @@ export default class App extends React.Component {
   service = new Service();
   
   componentDidMount() {
-    this.service.getAllMovies().then((data => {
-      this.setState({data: data.Search})
-    }));
+    this.service.getAllMovies()
+      .then((data => {
+        this.setState({data})
+      }));
   }
 
   render() {
