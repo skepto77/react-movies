@@ -19,6 +19,11 @@ export default class Service extends React.Component {
     return res.Search.map(this._transformData);
   }
 
+  getSearchMovies = async (value) => {
+    const res = await this.getResource(`&plot=full&s=${value}`);
+    return (res.Search) ? res.Search.map(this._transformData) : res;
+  }
+
   _transformData(item) {
     const {Title, Type, Poster, imdbID} = item;
     return {
