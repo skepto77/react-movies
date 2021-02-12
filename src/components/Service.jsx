@@ -19,8 +19,9 @@ export default class Service extends React.Component {
     return res.Search.map(this._transformData);
   }
 
-  getSearchMovies = async (value) => {
-    const res = await this.getResource(`&plot=full&s=${value}`);
+  getSearchMovies = async (value, type) => {
+    console.log(`&plot=full&s=${value}${type !== 'all' ? `&type=${type}` : ''}`)
+    const res = await this.getResource(`&plot=full&t=${value}${type !== 'all' ? `&type=${type}` : ''}`);
     return (res.Search) ? res.Search.map(this._transformData) : res;
   }
 

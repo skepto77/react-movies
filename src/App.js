@@ -24,9 +24,9 @@ export default class App extends React.Component {
       }));
   }
 
-  handleSearch = (value) => {
+  handleSearch = (value, type) => {
     this.setState({data:[]})
-    this.service.getSearchMovies(value)
+    this.service.getSearchMovies(value, type)
       .then((data => {
         if (data.Error) {
           this.setState({data: [], message:data.Error })
@@ -47,7 +47,9 @@ export default class App extends React.Component {
           <div className="row">
             <h2>app</h2>
           </div>
-          <Search onSearch={this.handleSearch}/>
+          <div className="row mb-4">
+            <Search onSearch={this.handleSearch}/>
+          </div>
           {isLoading}
           {movies}
         </main>
