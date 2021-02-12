@@ -1,12 +1,15 @@
 import React from 'react';
+import App from '../App';
+import MovieList from '../components/MovieList'
 
-export default () => {
+export default function Main (props) {
 
   return (
     <main className="container">
       <div className="row">
-        <h1>Movies app</h1>
+        <h2>app</h2>
       </div>
+        <MovieList getData = {props.getData}/>
     </main>
   )
 }
