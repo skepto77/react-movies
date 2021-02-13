@@ -3,7 +3,7 @@ import React from 'react';
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 export default class Service extends React.Component {
-  _apiBase = 'http://www.omdbapi.com/';
+  _apiBase = 'https://www.omdbapi.com/';
   _proxy = 'https://cors-anywhere.herokuapp.com';
 
   getResource = async (url) => {
