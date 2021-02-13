@@ -19,14 +19,14 @@ export default class Search extends React.Component {
     const {value, type} = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
-        <div className="input-group mb-0">
+        <div className="input-group search-input-group">
           <input type="text"
                     className="form-control search-input"
                     placeholder="type to search" 
                     onChange={this.handleChange}
                     value={value}
                     />
-          <button type="submit" className="btn btn-primary" style={{height:'36px', margin:'auto 0'}}>Search</button>
+          <button type="submit" className="btn btn-primary btn-search">Search</button>
         </div>
         <div className="form-check form-check-inline">
           <input 

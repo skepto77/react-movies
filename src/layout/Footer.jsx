@@ -4,9 +4,9 @@ export default function Footer() {
 
   return (
     <footer className="navbar navbar-light bg-light">
-      <div className="container-fluid d-flex flex-row justify-content-around">
+      <div className="container-fluid d-flex flex-row justify-content-justify">
           <div className="">
-            Movies app, {new Date().getFullYear()}
+            movies app, {new Date().getFullYear()}
           </div>
           <div className="">
             <span className="navbar-xtext">Github</span>
