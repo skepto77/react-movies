@@ -1,4 +1,3 @@
 # react movies
 
-[demo](https://skepto77.github.io/react-movies/
-demo)
+[demo](https://skepto77.github.io/react-movies/)
