@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/skepto77/react-movies/static/css/main.dfc442bd.chunk.css",
+    "main.js": "/skepto77/react-movies/static/js/main.2b8e78e4.chunk.js",
+    "main.js.map": "/skepto77/react-movies/static/js/main.2b8e78e4.chunk.js.map",
+    "runtime-main.js": "/skepto77/react-movies/static/js/runtime-main.4aac219d.js",
+    "runtime-main.js.map": "/skepto77/react-movies/static/js/runtime-main.4aac219d.js.map",
+    "static/js/2.336469a0.chunk.js": "/skepto77/react-movies/static/js/2.336469a0.chunk.js",
+    "static/js/2.336469a0.chunk.js.map": "/skepto77/react-movies/static/js/2.336469a0.chunk.js.map",
+    "index.html": "/skepto77/react-movies/index.html",
+    "static/css/main.dfc442bd.chunk.css.map": "/skepto77/react-movies/static/css/main.dfc442bd.chunk.css.map",
+    "static/js/2.336469a0.chunk.js.LICENSE.txt": "/skepto77/react-movies/static/js/2.336469a0.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4aac219d.js",
+    "static/js/2.336469a0.chunk.js",
+    "static/css/main.dfc442bd.chunk.css",
+    "static/js/main.2b8e78e4.chunk.js"
+  ]
+}
