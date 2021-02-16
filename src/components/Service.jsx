@@ -1,40 +1,34 @@
-import React from 'react';
-
 const API_KEY = process.env.REACT_APP_API_KEY;
+const _apiBase = 'https://www.omdbapi.com/';
+const _proxy = 'https://cors-anywhere.herokuapp.com';
 
-export default class Service extends React.Component {
-  _apiBase = 'https://www.omdbapi.com/';
-  _proxy = 'https://cors-anywhere.herokuapp.com';
-
-  getResource = async (url) => {
-    const response = await fetch(`${this._apiBase}?apikey=${API_KEY}${url}`);
-    if (!response.ok) {
-      throw new Error(`Could not fetch ${url}` +
-        `, received ${response.status}`)
-    }
-    return await response.json();
+const getResource = async (url) => {
+  const response = await fetch(`${_apiBase}?apikey=${API_KEY}${url}`);
+  if (!response.ok) {
+    throw new Error(`Could not fetch ${url}` +
+      `, received ${response.status}`)
   }
-
-  getDefaultMovies = async () => {
-    const res = await this.getResource(`&plot=full&s=doctor`);
-    return res.Search.map(this._transformData);
-  }
-
-  getSearchMovies = async (value, type) => {
-    console.log(`&plot=full&s=${value}${type !== 'all' ? `&type=${type}` : ''}`)
-    const res = await this.getResource(`&plot=full&s=${value}${type !== 'all' ? `&type=${type}` : ''}`);
-    return (res.Search) ? res.Search.map(this._transformData) : res;
-  }
-
-  _transformData(item) {
-    const {Title, Type, Poster, imdbID} = item;
-    return {
-      title: Title,
-      type: Type,
-      poster: Poster,
-      id: imdbID,
-    }
-  }
-
+  return await response.json();
 }
+
+export const getDefaultMovies = async () => {
+    const res = await getResource(`&plot=full&s=doctor`);
+    return res.Search.map(_transformData);
+}
+
+export const getSearchMovies = async (value, type) => {
+  const res = await getResource(`&plot=full&s=${value}${type !== 'all' ? `&type=${type}` : ''}`);
+  return (res.Search) ? res.Search.map(_transformData) : res;
+}
+
+const _transformData = (item) => {
+  const {Title, Type, Poster, imdbID} = item;
+  return {
+    title: Title,
+    type: Type,
+    poster: Poster,
+    id: imdbID,
+  }
+}
+
 
