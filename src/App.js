@@ -15,6 +15,8 @@ function setDefaultWatchList() {
 
 export default function App() {
   const [data, setData] = useState([]);
+  const [result, setResult] = useState([]);
+  // const [loadnig, setLoading] = useState(true);
   const [message, setMessage] = useState(null);
   const [watchList, setWatchList] = useState(setDefaultWatchList());
   const [alertItem, setAlert] = useState('');
@@ -23,23 +25,25 @@ export default function App() {
   useEffect(() => {
     service.getDefaultMovies()
       .then((data => {
-        compareDataWithWatchList(data);
+        setData(data);
       }));
-    // eslint-disable-next-line
   }, [])
 
-
-  const compareDataWithWatchList = (data) => {
-    let tmp =  [...data];
-    watchList.forEach((item) => {
-      let idxData = data.findIndex((value) => value.id === item.id);
-      if (idxData > -1) {
-        const newItem = { ...data[idxData], isWatch: true };
-        tmp = [...tmp.slice(0, idxData), newItem, ...tmp.slice(idxData + 1)];
-      }
-     });
-     setData(tmp);
-  }
+  useEffect(() => {
+    const compareDataWithWatchList = () => {
+      let tmp =  [...data];
+      watchList.forEach((item) => {
+        let idxData = data.findIndex((value) => value.id === item.id);
+        if (idxData > -1) {
+          const newItem = { ...data[idxData], isWatch: true };
+          tmp = [...tmp.slice(0, idxData), newItem, ...tmp.slice(idxData + 1)];
+        }
+       });
+       setResult(tmp);
+    }
+   compareDataWithWatchList();
+  
+  }, [data, watchList])
 
 
   useEffect(() => {
@@ -57,7 +61,7 @@ export default function App() {
       })
       .then((data) => {
         setMessage(null);
-        compareDataWithWatchList(data);
+        setData(data);
       })
       .catch((error) => {
         setMessage(error.message);
@@ -67,26 +71,18 @@ export default function App() {
 
   const handleAddToWatchList = (item) => {
     const idx = watchList.findIndex((value) => value.id === item.id);
-    const idxData = data.findIndex((value) => value.id === item.id);
     if (idx < 0) {
-      const newItem = { ...data[idxData], isWatch: true }
       setWatchList([...watchList, item]);
-      setData([...data.slice(0, idxData), newItem, ...data.slice(idxData + 1)])
       setAlert(`${item.title} added to watch list`);
     } else {
       const newWatchListItem = [...watchList.slice(0, idx), ...watchList.slice(idx + 1)];
-      const newItem = { ...data[idxData], isWatch: false };
       setWatchList([...newWatchListItem]);
-      setData([...data.slice(0, idxData), newItem, ...data.slice(idxData + 1)])
       setAlert(`${item.title} removed from the watch list`);
     }
   };
 
   const handleRemoveFromWatchList = (id) => {
     setWatchList(watchList.filter((item) => item.id !== id));
-    const idxData = data.findIndex((value) => value.id === id);
-    const newItem = { ...data[idxData], isWatch: false };
-    setData([...data.slice(0, idxData), newItem, ...data.slice(idxData + 1)]);
     setAlert(`${id} removed from the watch list`);
   };
 
@@ -94,15 +90,15 @@ export default function App() {
     setAlert('');
   };
 
-  const movies = (!message) ? <MovieList getData ={data} addToWatchList={handleAddToWatchList}/> : message;
-  const renderResult = (!data.length && !message) ? <Loader /> : movies;
+  const movies = (!message) ? <MovieList getData ={result} addToWatchList={handleAddToWatchList}/> : message;
+  const renderResult = (!result.length && !message) ? <Loader /> : movies;
 
   return (
     <>
       <Header />
       <main className="container position-relative">
         <div className="row">
-          <h2>app</h2>
+          {/* <h2>header/h2> */}
         </div>
         <div className="position-fixed top-20 end-0 btn btn-light watchlist">
         <WatchList watchList={watchList} removeFromWatchList={handleRemoveFromWatchList}/>
@@ -116,6 +112,5 @@ export default function App() {
       <Footer />
     </>
   );
-  // }
 }
 
