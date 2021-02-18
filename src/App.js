@@ -2,33 +2,49 @@ import React, { useState, useEffect } from 'react';
 import Header from './layout/Header'
 import Footer from './layout/Footer'
 import * as service  from './components/Service';
-import Spinner from './components/Spinner';
+import Loader from './components/Loader';
 import MovieList from './components/MovieList'
 import Search from './components/Search'
+import WatchList from './components/WatchList'
+import Alert from './components/Alert'
+
+function setDefaultWatchList() {
+  const watchList = localStorage.getItem('watchList');
+  return (watchList && watchList.length) ? JSON.parse(watchList) : [];
+}
 
 export default function App() {
   const [data, setData] = useState([]);
-  const [loadnig, setLoading] = useState(true);
   const [message, setMessage] = useState(null);
-  
-  
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //     data: [],
-  //     loadnig: true,
-  //     message: null
-  //   }
-  // }
+  const [watchList, setWatchList] = useState(setDefaultWatchList());
+  const [alertItem, setAlert] = useState('');
 
-  // let service = Service;
-
+  
   useEffect(() => {
     service.getDefaultMovies()
       .then((data => {
-        setData(data)
+        compareDataWithWatchList(data);
       }));
+    // eslint-disable-next-line
   }, [])
+
+
+  const compareDataWithWatchList = (data) => {
+    let tmp =  [...data];
+    watchList.forEach((item) => {
+      let idxData = data.findIndex((value) => value.id === item.id);
+      if (idxData > -1) {
+        const newItem = { ...data[idxData], isWatch: true };
+        tmp = [...tmp.slice(0, idxData), newItem, ...tmp.slice(idxData + 1)];
+      }
+     });
+     setData(tmp);
+  }
+
+
+  useEffect(() => {
+    localStorage.setItem('watchList', JSON.stringify(watchList));
+  }, [watchList])
 
   const handleSearch = (value, type) => {
     setData([]);
@@ -41,7 +57,7 @@ export default function App() {
       })
       .then((data) => {
         setMessage(null);
-        setData(data);
+        compareDataWithWatchList(data);
       })
       .catch((error) => {
         setMessage(error.message);
@@ -49,21 +65,54 @@ export default function App() {
       });
   }
 
-  const movies = (!message) ? <MovieList getData ={data} /> : message;
-  const isLoading = (data.length === 0 && !message) ? <Spinner /> : null;
+  const handleAddToWatchList = (item) => {
+    const idx = watchList.findIndex((value) => value.id === item.id);
+    const idxData = data.findIndex((value) => value.id === item.id);
+    if (idx < 0) {
+      const newItem = { ...data[idxData], isWatch: true }
+      setWatchList([...watchList, item]);
+      setData([...data.slice(0, idxData), newItem, ...data.slice(idxData + 1)])
+      setAlert(`${item.title} added to watch list`);
+    } else {
+      const newWatchListItem = [...watchList.slice(0, idx), ...watchList.slice(idx + 1)];
+      const newItem = { ...data[idxData], isWatch: false };
+      setWatchList([...newWatchListItem]);
+      setData([...data.slice(0, idxData), newItem, ...data.slice(idxData + 1)])
+      setAlert(`${item.title} removed from the watch list`);
+    }
+  };
+
+  const handleRemoveFromWatchList = (id) => {
+    setWatchList(watchList.filter((item) => item.id !== id));
+    const idxData = data.findIndex((value) => value.id === id);
+    const newItem = { ...data[idxData], isWatch: false };
+    setData([...data.slice(0, idxData), newItem, ...data.slice(idxData + 1)]);
+    setAlert(`${id} removed from the watch list`);
+  };
+
+  const closeAlert = () => {
+    setAlert('');
+  };
+
+  const movies = (!message) ? <MovieList getData ={data} addToWatchList={handleAddToWatchList}/> : message;
+  const renderResult = (!data.length && !message) ? <Loader /> : movies;
+
   return (
     <>
       <Header />
-      <main className="container">
+      <main className="container position-relative">
         <div className="row">
           <h2>app</h2>
+        </div>
+        <div className="position-fixed top-20 end-0 btn btn-light watchlist">
+        <WatchList watchList={watchList} removeFromWatchList={handleRemoveFromWatchList}/>
         </div>
         <div className="row mb-4">
           <Search onSearch={handleSearch}/>
         </div>
-        {isLoading}
-        {movies}
+        {renderResult}
       </main>
+      {alertItem && <Alert name={alertItem} closeAlert={closeAlert}/>}
       <Footer />
     </>
   );

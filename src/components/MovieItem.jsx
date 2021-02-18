@@ -1,16 +1,15 @@
 import React from 'react';
 
 export default function MovieItem (props) {
-
   const shorten = (str) => {
-    return (str.length > 5) ? `${str.substr(0, 10)} ...` : str;
+    return (str && str.length > 5) ? `${str.substr(0, 10)} ...` : str;
   }
 
-  const { getData } = props;
-
+  const { getData, addToWatchList } = props;
+  
   const renderItem = () => {
     return getData.map((item) => {
-      const {title, type, poster, id} = item;
+      const {title, type, poster, id, isWatch} = item;
       const classType = (type === 'movie') ? 'badge rounded-pill bg-primary' : 'badge rounded-pill bg-warning text-dark';
       return (
         <div className="col-sm-6" key={id}>
@@ -20,12 +19,16 @@ export default function MovieItem (props) {
               <p className={classType}>{type}</p>
               <h5 className="card-title">{title}</h5>
               <p className="card-text">{shorten(title)} This content is a little bit longer.</p>
+              <button type="button" className="btn btn-sm btn-primary" disabled>Details</button> 
+              &nbsp;
+              <button type="button" className="btn btn-sm btn-light" onClick={() => addToWatchList({id, title})}>{(isWatch) ? <i className="bi bi-heart-fill" style={{color: 'red'}}></i> : <i className="bi bi-heart"></i>}</button>
             </div>
           </div>
         </div>
       )
     })
   }
+  
   const result = (getData) ? renderItem() : 'no movies';
 
   return (

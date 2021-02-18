@@ -28,6 +28,7 @@ const _transformData = (item) => {
     type: Type,
     poster: Poster,
     id: imdbID,
+    isWatch: false,
   }
 }
 
