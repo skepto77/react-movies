@@ -1,6 +1,4 @@
-import React from 'react';
-
-const Spinner = () => {
+const Loader = () => {
   return (
     <div className="d-flex justify-content-center">
       <div className="spinner-border" role="status">
@@ -10,4 +8,4 @@ const Spinner = () => {
   );
 };
 
-export default Spinner;
+export default Loader;

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import { useState } from 'react';
 
 export default function Search(props) {
   const {onSearch = Function.prototype} = props;
@@ -18,11 +18,10 @@ export default function Search(props) {
     <form onSubmit={handleSubmit}>
       <div className="input-group search-input-group">
         <input type="text"
-                  className="form-control search-input"
-                  placeholder="type to search" 
-                  onChange={handleChangeText}
-                  value={value}
-                  />
+          className="form-control search-input"
+          placeholder="type to search" 
+          onChange={handleChangeText}
+          value={value}/>
         <button type="submit" className="btn btn-primary btn-search">Search</button>
       </div>
       <div className="form-check form-check-inline">
@@ -32,8 +31,7 @@ export default function Search(props) {
           value="all"
           onChange={handleChangeRadio}
           name="Radios"
-          checked = {type === 'all'}
-          />
+          checked = {type === 'all'}/>
         <label className="form-check-label">
           All
         </label>
@@ -56,8 +54,7 @@ export default function Search(props) {
           value="series"  
           name="Radios"
           onChange={handleChangeRadio}
-          checked = {type === 'series'}
-          />
+          checked = {type === 'series'}/>
         <label className="form-check-label">
           Only series 
         </label>

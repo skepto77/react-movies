@@ -16,19 +16,25 @@ export const getDefaultMovies = async () => {
     return res.Search.map(_transformData);
 }
 
+export const getMovieById = async (id) => {
+  const res = await getResource(`&plot=full&i=${id}`);
+  return (_transformData(res));
+}
+
 export const getSearchMovies = async (value, type) => {
   const res = await getResource(`&plot=full&s=${value}${type !== 'all' ? `&type=${type}` : ''}`);
   return (res.Search) ? res.Search.map(_transformData) : res;
 }
 
 const _transformData = (item) => {
-  const {Title, Type, Poster, imdbID} = item;
+  const {Title, Type, Poster, imdbID, ...rest} = item;
   return {
     title: Title,
     type: Type,
-    poster: Poster,
+    poster: (Poster === 'N/A') ? 'https://via.placeholder.com/500x660.png?text=no+poster' : Poster,
     id: imdbID,
     isWatch: false,
+    ...rest,
   }
 }
 

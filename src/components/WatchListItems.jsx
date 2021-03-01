@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function WatchListItems (props) {
   const { watchList, removeFromWatchList } = props;
@@ -8,8 +8,8 @@ export default function WatchListItems (props) {
         const {id, title} = item;
         return (
           <li key={id} className="list-group-item d-flex justify-content-between align-items-center">
-            {title}
-            <span className="" onClick={() => removeFromWatchList(id)}><i className="bi bi-x"></i></span>
+            <Link to={`/${id}`} className="btn btn-light">{title}</Link>
+            <span className="" onClick={() => removeFromWatchList({id, title})}><i className="bi bi-x"></i></span>
           </li>
         )
       })

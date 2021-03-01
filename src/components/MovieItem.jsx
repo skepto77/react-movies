@@ -1,13 +1,10 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function MovieItem (props) {
-  const shorten = (str) => {
-    return (str && str.length > 5) ? `${str.substr(0, 10)} ...` : str;
-  }
 
-  const { getData, addToWatchList } = props;
+  const { getData, addToWatchList = Function.prototype } = props;
   
-  const renderItem = () => {
+  const renderMovie = () => {
     return getData.map((item) => {
       const {title, type, poster, id, isWatch} = item;
       const classType = (type === 'movie') ? 'badge rounded-pill bg-primary' : 'badge rounded-pill bg-warning text-dark';
@@ -18,9 +15,8 @@ export default function MovieItem (props) {
             <div className="card-body">
               <p className={classType}>{type}</p>
               <h5 className="card-title">{title}</h5>
-              <p className="card-text">{shorten(title)} This content is a little bit longer.</p>
-              <button type="button" className="btn btn-sm btn-primary" disabled>Details</button> 
-              &nbsp;
+              <p className="card-text">{`${title.slice(0, 10)}...`} This content is a little bit longer.</p>
+              <Link to={`/${id}`} type="button" className="btn btn-sm btn-primary" style={{marginRight: '10px'}}>Details</Link>
               <button type="button" className="btn btn-sm btn-light" onClick={() => addToWatchList({id, title})}>{(isWatch) ? <i className="bi bi-heart-fill" style={{color: 'red'}}></i> : <i className="bi bi-heart"></i>}</button>
             </div>
           </div>
@@ -29,11 +25,11 @@ export default function MovieItem (props) {
     })
   }
   
-  const result = (getData) ? renderItem() : 'no movies';
+  // const result = (getData) ? renderMovie() : 'no movies';
 
   return (
     <>
-        {result}
+        {renderMovie()}
     </>
   )
 }
