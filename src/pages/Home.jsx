@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
+import { Helmet } from "react-helmet";
 import * as service  from '../components/Service';
 import Loader from '../components/Loader';
 import MovieList from '../components/MovieList';
@@ -111,6 +112,9 @@ const Home = () => {
 
   return (
     <> 
+      <Helmet>
+        <title>Movies - Home page</title>
+      </Helmet>
       <div className="position-fixed top-20 end-0 btn btn-light watchlist">
         <WatchList watchList={watchList} removeFromWatchList={handleRemoveFromWatchList}/>
       </div>
