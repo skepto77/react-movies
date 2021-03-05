@@ -3,7 +3,7 @@ import { useState } from 'react';
 export default function Search(props) {
   const {onSearch = Function.prototype} = props;
 
-  const [ value, setText] = useState('doctor');
+  const [ value, setText] = useState('');
   const [ type, setType] = useState('all');
 
   const handleChangeText = (e) => setText(e.target.value);

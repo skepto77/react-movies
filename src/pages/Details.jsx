@@ -9,13 +9,12 @@ export default function Details() {
     const [movie, setMovie] = useState({});
     const { id } = useParams();
     const history = useHistory();
-
+    // console.log(history);
     useEffect(() => {
       getMovieById(id).then((data) => setMovie(data));
     }, [id]);
 
     const handleBack = () => {
-      console.log(history);
       if (history.action === 'PUSH') {
         history.goBack();
       } else {

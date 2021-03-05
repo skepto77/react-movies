@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
+import queryString from 'query-string';
 import * as service  from '../components/Service';
 import Loader from '../components/Loader';
 import MovieList from '../components/MovieList';
@@ -12,7 +14,6 @@ function setDefaultWatchList() {
   return (watchList && watchList.length) ? JSON.parse(watchList) : [];
 }
 
-
 const Home = () => {
   const [data, setData] = useState([]);
   const [result, setResult] = useState([]);
@@ -21,13 +22,8 @@ const Home = () => {
   const [watchList, setWatchList] = useState(setDefaultWatchList());
   const [alertItem, setAlert] = useState('');
 
-  
-  useEffect(() => {
-    service.getDefaultMovies()
-      .then((data => {
-        setData(data);
-      }));
-  }, [])
+  const { pathname, search } = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     const compareDataWithWatchList = () => {
@@ -50,7 +46,7 @@ const Home = () => {
     localStorage.setItem('watchList', JSON.stringify(watchList));
   }, [watchList])
 
-  const handleSearch = (value, type) => {
+  const handleSearch = useCallback((value, type) => {
     setData([]);
     service.getSearchMovies(value, type)
       .then((data) => {
@@ -60,6 +56,10 @@ const Home = () => {
         return data;
       })
       .then((data) => {
+        history.push({
+          pathname,
+          search: `?value=${value}&type=${type}`,
+        });
         setMessage(null);
         setData(data);
       })
@@ -67,7 +67,23 @@ const Home = () => {
         setMessage(error.message);
         setData([]);
       });
-  }
+  }, [history, pathname]);
+
+  // first render with/without query string
+  useEffect(() => {
+    service.getDefaultMovies()
+      .then((data => {
+        if (search) {
+          console.log(search);
+          const { value, type } = queryString.parse(search);
+          handleSearch(value, type);
+        } else {
+          console.log(search);
+          setData(data);
+        }
+      }));
+  }, [handleSearch, search]);
+
 
   const handleAddToWatchList = (item) => {
     const idx = watchList.findIndex((value) => value.id === item.id);
