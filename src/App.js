@@ -1,3 +1,4 @@
+import React from "react";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
@@ -5,7 +6,7 @@ import Footer from './layout/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Details from './pages/Details';
-import notFound from './pages/notFound';
+import NotFound from './pages/NotFound';
 
 export default function App() {
 
@@ -18,7 +19,7 @@ export default function App() {
             <Route exact path="/" component={Home}></Route>
             <Route path="/about" component={About}></Route>
             <Route path="/:id" component={Details}></Route>
-            <Route component={notFound}></Route>
+            <Route component={NotFound}></Route>
           </Switch>
           </main>
         <Footer />
